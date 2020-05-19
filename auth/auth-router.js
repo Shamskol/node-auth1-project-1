@@ -2,7 +2,7 @@ const router = require('express').Router();
 const bcryptjs = require('bcryptjs');
 
 const Users = require('../users/users-model.js');
-//const restricted = require('./restricted-middleware.js');
+const restricted = require('./restricted-middleware.js');
 
 // endpoints
 router.post('/register', (req, res) => {
@@ -44,19 +44,19 @@ router.post('/login', (req, res) => {
 		});
 });
 
-// router.get('/logout', restricted, (req, res) => {
-// 	if (req.session) {
-// 		req.session.destroy((err) => {
-// 			if (err) {
-// 				console.log(err);
-// 				return res.status(500).json({ message: 'There was an error' });
-// 			}
+router.get('/logout', restricted, (req, res) => {
+	if (req.session) {
+		req.session.destroy((err) => {
+			if (err) {
+				console.log(err);
+				return res.status(500).json({ message: 'There was an error' });
+			}
 
-// 			res.end();
-// 		});
-// 	} else {
-// 		res.end();
-// 	}
-// });
+			res.end();
+		});
+	} else {
+		res.end();
+	}
+});
 
 module.exports = router;
