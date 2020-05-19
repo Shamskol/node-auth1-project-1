@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const bcrypt = require('bcryptjs');
+const bcryptjs = require('bcryptjs');
 
 const Users = require('../users/users-model.js');
 //const restricted = require('./restricted-middleware.js');
@@ -13,10 +13,10 @@ router.post('/register', (req, res) => {
 		res.status(404).json({ message: 'No username or password submitted.' });
 	}
 
-	const hash = bcrypt.hashSync(user.password, 12); // hashing the user password
+	const hash = bcryptjs.hashSync(user.password, 12); // hashing the user password
 	user.password = hash; // setting the user password to the hashed password
 	Users.add(user)
-		.then(aved => {
+		.then(saved => {
 			res.status(201).json(saved);
 		})
 		.catch(err => {
@@ -31,7 +31,7 @@ router.post('/login', (req, res) => {
 		.first()
 		.then((user) => {
 			console.log(user);
-			if (username && bcrypt.compareSync(password, user.password)) {
+			if (username && bcryptjs.compareSync(password, user.password)) {
 				req.session.user = user;
 
 				res.status(201).json({ message: 'Logged in' });
